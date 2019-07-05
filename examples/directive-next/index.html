@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>directive for Vue2.0</title>
+  <script src="//cdn.jsdelivr.net/vue/2.0.0-rc.8/vue.min.js"></script>
+  <style>
+    label {
+      min-width: 100px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    input, textarea {
+      border: 0;
+      outline: 0;
+    }
+
+    .form-item {
+      margin: 5px 0;
+    }
+
+    .input {
+      display: inline-block;
+    }
+
+    .input input {
+      border: 1px solid #ccc;
+      height: 22px;
+    }
+
+    .textarea {
+      border: 1px solid #ccc;
+      display: inline-block;
+    }
+
+    .textarea.vuerify-invalid {
+      border-color: red;
+    }
+
+    .vuerify-invalid input {
+      border-color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>directive for Vue2.0</h1>
+  <div id="app">
+    <form @submit.prevent="handleSubmit">
+      <div class="form-item">
+        <label>username</label>
+        <x-input class="input" v-model="username" field="username"></x-input>
+      </div>
+
+      <div class="form-item">
+        <label>email</label>
+        <x-input class="input" v-model="email" field="email"></x-input>
+      </div>
+
+      <div class="form-item">
+        <label>birthday</label>
+        <x-input class="input" v-model="birthday" field="birthday"></x-input>
+      </div>
+
+      <div class="form-item">
+        <label>bio</label>
+        <x-textarea class="textarea" v-vuerify="'bio'" v-model="bio"></x-textarea>
+        <span v-text="errors.bio"></span>
+      </div>
+
+      <div class="form-item">
+        <input type="submit">
+      </div>
+    </form>
+  </div>
+
+  <script id="x-input" type="text/x-template">
+    <span v-vuerify.parent="field">
+      <input :value="value" @change="$emit('input', $event.target.value)">
+      <span class="error" v-text="$parent.$vuerify.$errors[field]"></span>
+    </span>
+  </script>
+
+  <script id="x-textarea" type="text/x-template">
+    <span>
+      <textarea :value="value" @change="$emit('input', $event.target.value)"></textarea>
+    </span>
+  </script>
+</body>
+</html>
